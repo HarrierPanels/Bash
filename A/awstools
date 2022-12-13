@@ -1,0 +1,77 @@
+#!/bin/bash
+# AWS EC2ls v1.0
+# Global
+subnet=$(aws ec2 describe-instances | grep -oP '(?<="SubnetId": ").*(?=")' | head -n1)
+cidr=$(aws ec2 describe-subnets --filters "Name=subnet-id,Values=$subnet" --query "Subnets[*].[CidrBlock]" --o text)
+script=$(basename -- "$0")
+
+Intro() {
+	echo
+	echo '---------------------------------------------------------------------------------------------------------------'
+	echo "AWS EC2ls v1.0"
+	echo '---------------------------------------------------------------------------------------------------------------'
+}
+
+check() {
+	command -v "$1" >/dev/null 2>&1
+}
+
+installaws() {
+	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+	unzip awscliv2.zip
+	sudo ./aws/install
+}
+
+ec2_info() {
+	aws ec2 describe-instances \
+	       --filters "Name=subnet-id,Values=[$subnet]" \
+	       --query "Reservations[*].Instances[*].[PrivateIpAddress,PrivateDnsName, \
+	       InstanceId,ImageId,State.Name]" --o table
+}
+
+ec2_info_symb() {
+	echo "Subnet: $cidr | Symbolic names:"
+	echo '---------------------------------------------------------------------------------------------------------------'
+	aws ec2 describe-instances \
+		--filters "Name=subnet-id,Values=[$subnet]" \
+		--query "Reservations[*].Instances[*].[PrivateDnsName]" --o text | sed 's/.ec2.internal//g'
+}
+
+ports() {
+	netstat -ntlp
+}
+
+man() {
+	Intro
+	echo
+	echo "Usage: ./$script [OPTIONS]"
+	echo "Example: ./$script --all"
+	echo
+	echo "    Options:"
+	echo "   --all           Displays current subnet EC2 IP's, symbolic names, ID's, AMi's, & state"
+	echo "   --target        Displays a list of open system TCP ports"
+	echo "   --help          Displays this help"
+	echo
+}
+
+case $* in
+
+	"--all")
+	if check aws; then aws configure; else installaws; aws configure; fi
+	Intro && ec2_info_symb && ec2_info
+	;;
+
+        "--target")
+	Intro	
+	ports	
+	;;	
+
+	"--help")
+	man
+	;;
+
+	*)
+	if [ -z $1 ]; then man; else echo "Unknown command!" && man; fi
+	;;
+
+esac
