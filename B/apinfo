@@ -1,0 +1,44 @@
+#!/bin/bash
+
+read -r -p "Enter Apache log file name with absolute or relative path: " log 
+
+options() {
+echo "Select option:"
+echo "  1) From which IP there were the most requests?"
+echo "  2) What is the most requested page?"
+echo "  3) How many requests were there from each IP?"
+echo "  4) What non-existent pages were clients referred to?"
+echo "  5) What time did the site get the most requests?"
+echo "  6) What search bots have accessed the site? (UA + IP)"
+
+read n
+case $n in
+	  1) echo "Requests :: IP:$(awk '{ print $1}' $log | sort | uniq -c | sort -nr | head -n1)";;
+	  2) echo "Requests :: Page:$(awk '{ print $7}' $log | sort | uniq -c | sort -nr | head -n1)";;
+	  3) echo -e "Requests :: IP:\n$(awk '{ print $1}' $log | sort | uniq -c | sort -nr)";;
+	  4) echo -e "Non-existent Pages:\n$(awk '{ print $7}' $log | grep "error" | sort | uniq)";;
+	  5) echo "Maximum reqiests :: Day:$(awk '{print $4}' $log | cut -d: -f1 | \
+		  uniq -c | sort -nr | head -n1 | tr -d '[')";;
+	  6) echo -e "Bots & IP's:\n$(awk '{print $14,$16 " - " $1}' $log | grep -i "bot" | sort | uniq)";;
+	  *) echo "Invalid option";;
+esac
+}
+
+next() {
+	while :; do 
+		read -r -p "Want to choose another option? [y/n] " input 
+
+		case $input in
+
+			y)	echo "Ok carry on then." && options;;
+			n)
+				echo "Ok bye!" && exit;;
+			*)
+				echo "Answer ( y ) for yes or ( n ) for no.";;
+		esac
+	done
+}
+
+options
+next
+
