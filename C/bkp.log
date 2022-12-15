@@ -1,0 +1,13 @@
+Baking up files on Thu Dec 15 22:06:34 UTC 2022:
+‘/home/ec2-user/Bash/C/a/test1’ -> ‘/home/ec2-user/Bash/C/b/20221215/test1’
+‘/home/ec2-user/Bash/C/a/test2’ -> ‘/home/ec2-user/Bash/C/b/20221215/test2’
+‘/home/ec2-user/Bash/C/a/test3’ -> ‘/home/ec2-user/Bash/C/b/20221215/test3’
+‘/home/ec2-user/Bash/C/a/test4’ -> ‘/home/ec2-user/Bash/C/b/20221215/test4’
+Baking up files on Thu Dec 15 22:10:05 UTC 2022:
+‘/home/ec2-user/Bash/C/a/test1’ -> ‘/home/ec2-user/Bash/C/b/20221215/test1’
+‘/home/ec2-user/Bash/C/a/test2’ -> ‘/home/ec2-user/Bash/C/b/20221215/test2’
+‘/home/ec2-user/Bash/C/a/test3’ -> ‘/home/ec2-user/Bash/C/b/20221215/test3’
+‘/home/ec2-user/Bash/C/a/test4’ -> ‘/home/ec2-user/Bash/C/b/20221215/test4’
+Removing files older than 30 days on Thu Dec 15 22:10:05 UTC 2022:
+removed ‘/home/ec2-user/Bash/C/b/20131203/test’
+removed directory: ‘/home/ec2-user/Bash/C/b/20131203’

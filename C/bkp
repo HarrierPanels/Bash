@@ -1,0 +1,22 @@
+#!/bin/bash
+
+date=`date +%Y%m%d`
+rm=`find $2 -type d -a -mtime +30`
+
+copy() {
+	if [ -d $2/$date ]; then echo "Baking up files on `date`:" >>bkp.log 
+	cp -v $1/* $2/$date >>bkp.log
+	else
+	mkdir $2/$date
+	echo "Baking up files on `date`:" >>bkp.log 
+	cp -v $1/* $2/$date >>bkp.log
+	fi
+}
+
+remove() {
+	if [[ $rm != "" ]]; then echo "Removing files older than 30 days on `date`:" >>bkp.log; fi
+	for i in $rm; do
+		rm -vrf $i >>bkp.log
+	done
+}
+copy $1 $2 && remove
