@@ -1,7 +1,8 @@
 #!/bin/bash
 # AWS EC2ls v1.0
 # Global
-subnet=$(aws ec2 describe-instances | grep -oP '(?<="SubnetId": ").*(?=")' | head -n1)
+ip=$(ip a | grep "dynamic eth0" | awk '{print $2}' | cut -d '/' -f1)
+subnet=$(aws ec2 describe-instances --o text | grep "$ip" | grep "subnet-" | head -n1 | awk '{print $(NF-2)}')
 cidr=$(aws ec2 describe-subnets --filters "Name=subnet-id,Values=$subnet" --query "Subnets[*].[CidrBlock]" --o text)
 script=$(basename -- "$0")
 
