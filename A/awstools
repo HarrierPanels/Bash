@@ -7,11 +7,12 @@ cidr=$(aws ec2 describe-subnets --filters "Name=subnet-id,Values=$subnet" --quer
 script=$(basename -- "$0")
 
 Intro() {
-	echo
-	echo '---------------------------------------------------------------------------------------------------------------'
-	echo "AWS EC2ls v1.0"
-	echo '---------------------------------------------------------------------------------------------------------------'
+        echo
+        echo '---------------------------------------------------------------------------------------------------------------'
+        echo "                    AWS EC2ls v1.0                                                                            |"
+        echo '--------------------------------------------------------------------------------------------------------------+'
 }
+
 
 check() {
 	command -v "$1" >/dev/null 2>&1
@@ -31,11 +32,11 @@ ec2_info() {
 }
 
 ec2_info_symb() {
-	echo "IP: $ip | Subnet: $cidr | Symbolic names:"
-	echo '---------------------------------------------------------------------------------------------------------------'
-	aws ec2 describe-instances \
-		--filters "Name=subnet-id,Values=[$subnet]" \
-		--query "Reservations[*].Instances[*].[PrivateDnsName]" --o text | sed 's/.ec2.internal//g'
+        echo "IP: $ip | Subnet: $cidr | Symbolic names:                                                  |"
+        echo '--------------------------------------------------------------------------------------------------------------+'
+        aws ec2 describe-instances \
+                --filters "Name=subnet-id,Values=[$subnet]" \
+                --query "Reservations[*].Instances[*].[PrivateDnsName]" --o text | sed 's/.ec2.internal//g'
 }
 
 ports() {
