@@ -31,7 +31,7 @@ ec2_info() {
 }
 
 ec2_info_symb() {
-	echo "Subnet: $cidr | Symbolic names:"
+	echo "IP: $ip | Subnet: $cidr | Symbolic names:"
 	echo '---------------------------------------------------------------------------------------------------------------'
 	aws ec2 describe-instances \
 		--filters "Name=subnet-id,Values=[$subnet]" \
